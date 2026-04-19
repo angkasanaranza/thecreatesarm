@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Create's Arm</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{background:#b8d8f2c7;color:#333;overflow-x:hidden}
+
+    header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:#b8d8f2c7;backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
+    header h1{color:#000000}
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #b8d8f2c7, #4d92ce);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .section{padding:50px 40px}
+    .section h2{text-align:center;margin-bottom:20px;color:#000000}
+
+    .controls{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+    .controls input,.controls select{padding:10px;border-radius:12px;border:1px solid #b8d8f2c7}
+
+    /* SLIDER */
+    .slider{overflow:hidden;position:relative;margin-bottom:25px}
+    .slider-track{display:flex;transition:transform .8s ease-in-out}
+    .slide{min-width:100%;padding:20px}
+    .slide-inner{background:white;border-radius:20px;padding:20px;box-shadow:0 10px 20px rgba(0,0,0,.08);animation:fadeScale 1s}
+
+    /* PRODUCTS */
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+    .card{background:white;border-radius:20px;padding:15px;box-shadow:0 10px 20px rgba(0,0,0,.1);transition:.4s ease;opacity:0;transform:translateY(30px) scale(.95)}
+    .card.show{opacity:1;transform:translateY(0) scale(1)}
+
+    .card:hover{transform:scale(1.05)}
+    .card img{width:100%;border-radius:15px;height:180px;object-fit:cover}
+
+    .price{color:#ffc49f;font-weight:bold}
+    .rating{color:#f5a623}
+
+    .card button{margin-top:10px;width:100%;padding:10px;border:none;border-radius:15px;background:#25D366;color:white;cursor:pointer;transition:.3s}
+    .card button:hover{transform:scale(1.05)}
+
+    footer{text-align:center;padding:20px;background:#b8d8f2c7;margin-top:40px}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(30px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @keyframes fadeScale{
+      from{opacity:0;transform:scale(.9)}
+      to{opacity:1;transform:scale(1)}
+    }
+  </style>
+</head>
+<body>
+  
+
+<header>
+  <h1>Handmade Shop</h1>
+</header>
+
+<section class="hero">
+  <h2>Gelang • Clay • Rajutan</h2>
+
+  <p>Hadiah lucu, aesthetic, dan penuh makna. And I hope u like it guys! ✨💖</p>
+  <div class="badges">✔ Handmade ✔ Custom ✔ Banyak yang repeat order</div>
+</section>
+
+<section class="section">
+  <h2>Our Products</h2>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="Cari produk...">
+    <select id="filter">
+      <option value="all">Semua</option>
+      <option value="gelang">Gelang</option>
+      <option value="clay">Clay</option>
+      <option value="rajut">Rajutan</option>
+    </select>
+  </div>
+
+ <!-- SLIDER -->
+  <div class="slider">
+    <div class="slider-track" id="sliderTrack">
+      <div class="slide"><div class="slide-inner"><h3>Promo Gelang 💖</h3><p>Diskon sampai 20%</p></div></div>
+      <div class="slide"><div class="slide-inner"><h3>Clay Lucu 🧸</h3><p>Best seller minggu ini</p></div></div>
+      <div class="slide"><div class="slide-inner"><h3>Rajutan Handmade 🧶</h3><p>Limited edition</p></div></div>
+    </div>
+  </div>
+
+  <div class="products" id="productList">
+
+    <div class="card" data-name="gelang pink" data-category="gelang">
+      <img src="img/foto3.jpeg">
+      <h3>Gelang Pink</h3>
+      <div class="rating">⭐⭐⭐⭐☆</div>
+      <p class="price">Start from Rp14.999</p>
+      <button onclick="waOrder('Gelang Pink')">WhatsApp</button>
+    </div>
+
+    <div class="card" data-name="clay mini" data-category="clay">
+      <img src="img/clay2.jpg">
+      <h3>Clay Mini</h3>
+      <div class="rating">⭐⭐⭐⭐⭐</div>
+      <p class="price">Start from Rp7.999</p>
+      <button onclick="waOrder('Clay Mini')">WhatsApp</button>
+    </div>
+
+    <div class="card" data-name="rajut boneka" data-category="rajut">
+      <img src="img/rajutan.png">
+      <h3>Boneka Rajut</h3>
+      <div class="rating">⭐⭐⭐⭐☆</div>
+      <p class="price">Start From Rp18.999</p>
+      <button onclick="waOrder('Boneka Rajut')">WhatsApp</button>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 The Create's Arm</p>
+</footer>
+
+<script>
+  function waOrder(product){
+    let number='6281385998466';
+    let message=`Halo, saya mau pesan ${product}`;
+    window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`,'_blank');
+  }
+
+  // SEARCH FILTER
+  const search=document.getElementById('search');
+  const filter=document.getElementById('filter');
+  const cards=document.querySelectorAll('.card');
+
+  function updateFilter(){
+    let keyword=search.value.toLowerCase();
+    let category=filter.value;
+
+    cards.forEach(card=>{
+      let name=card.dataset.name;
+      let cat=card.dataset.category;
+      let show=name.includes(keyword)&&(category==='all'||cat===category);
+      card.style.display=show?'block':'none';
+    });
+  }
+
+  search.addEventListener('input',updateFilter);
+  filter.addEventListener('change',updateFilter);
+
+  // SLIDER AUTO
+  let index=0;
+  let track=document.getElementById('sliderTrack');
+  setInterval(()=>{
+    index=(index+1)%3;
+    track.style.transform=`translateX(-${index*100}%)`;
+  },3000);
+
+  // SCROLL ANIMATION
+  function reveal(){
+    let cards=document.querySelectorAll('.card');
+    let windowHeight=window.innerHeight;
+
+    cards.forEach(card=>{
+      let top=card.getBoundingClientRect().top;
+      if(top<windowHeight-50){
+        card.classList.add('show');
+      }
+    });
+  }
+
+  window.addEventListener('scroll',reveal);
+  window.addEventListener('load',reveal);
+</script>
+
+</body>
+</html>
